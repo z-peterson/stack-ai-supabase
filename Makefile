@@ -3,6 +3,7 @@
 TERRAFORM_DIR := terraform
 KUBERNETES_DIR := kubernetes
 SCRIPTS_DIR := scripts
+CHART_CACHE := /tmp/supabase-chart/supabase
 
 # Initialize terraform and download providers
 init:
@@ -16,9 +17,15 @@ validate:
 lint:
 	cd $(TERRAFORM_DIR) && tflint --recursive
 
+# Pull chart locally for linting
+helm-pull:
+	@if [ ! -d "$(CHART_CACHE)" ]; then \
+		helm pull supabase-community/supabase --untar -d /tmp/supabase-chart; \
+	fi
+
 # Helm lint
-helm-lint:
-	helm lint -f $(KUBERNETES_DIR)/values/supabase-production.yaml supabase-community/supabase
+helm-lint: helm-pull
+	helm lint -f $(KUBERNETES_DIR)/values/supabase-production.yaml $(CHART_CACHE)
 
 # Helm template render
 helm-template:

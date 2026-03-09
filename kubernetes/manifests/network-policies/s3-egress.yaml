@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-s3-egress
+  namespace: supabase
+spec:
+  podSelector:
+    matchLabels:
+      supabase.io/s3-access: "true"
+  policyTypes:
+    - Egress
+  egress:
+    # Allow HTTPS egress for S3 and STS (IRSA token exchange)
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443
