@@ -18,6 +18,11 @@ variable "storage_bucket_arn" {
   type        = string
 }
 
+variable "secrets_arn" {
+  description = "ARN of the Secrets Manager secret for ESO access scoping"
+  type        = string
+}
+
 variable "environment" {
   description = "Environment name (e.g., production, staging)"
   type        = string

@@ -39,7 +39,7 @@ resource "aws_db_parameter_group" "this" {
 
   parameter {
     name         = "cron.database_name"
-    value        = "supabase"
+    value        = var.db_name
     apply_method = "pending-reboot"
   }
 

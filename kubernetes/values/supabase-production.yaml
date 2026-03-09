@@ -272,7 +272,7 @@ environment:
     FLY_APP_NAME: realtime
     ENABLE_TAILSCALE: "false"
     DB_AFTER_CONNECT_QUERY: "SET search_path TO _realtime"
-    DB_ENC_KEY: supabaserealtime
+    # DB_ENC_KEY injected via ExternalSecret (stored in Secrets Manager)
     ERL_AFLAGS: -proto_dist inet_tcp
     DNS_NODES: "''"
     RLIMIT_NOFILE: "10000"
@@ -460,8 +460,8 @@ serviceAccount:
   storage:
     create: true
     annotations:
-      # IRSA role ARN for S3 access — populated by Terraform output
-      eks.amazonaws.com/role-arn: "arn:aws:iam::role/supabase-storage-irsa"
+      # IRSA role ARN for S3 access — overridden by deploy.sh with Terraform output
+      eks.amazonaws.com/role-arn: "REPLACED_BY_DEPLOY_SCRIPT"
     name: supabase-storage
   studio:
     create: true

@@ -22,7 +22,7 @@ rm -f tfplan
 
 # Capture outputs
 CLUSTER_NAME=$(terraform output -raw cluster_name)
-AWS_REGION=$(terraform output -raw 2>/dev/null || echo "us-east-1")
+AWS_REGION=$(grep -m1 'aws_region' terraform.tfvars 2>/dev/null | cut -d'"' -f2 || echo "us-east-1")
 ESO_ROLE_ARN=$(terraform output -raw eso_role_arn)
 STORAGE_ROLE_ARN=$(terraform output -raw storage_role_arn)
 

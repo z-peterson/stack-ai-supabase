@@ -55,7 +55,7 @@ resource "aws_iam_role_policy" "eso" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret",
         ]
-        Resource = "*"
+        Resource = var.secrets_arn
       }
     ]
   })

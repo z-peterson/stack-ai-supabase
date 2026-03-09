@@ -9,3 +9,9 @@ variable "db_username" {
   type        = string
   default     = "supabase_admin"
 }
+
+variable "db_name" {
+  description = "Database name to store in the secret"
+  type        = string
+  default     = "supabase"
+}

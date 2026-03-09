@@ -31,10 +31,10 @@ This deployment runs Supabase on AWS using EKS for compute, RDS for the database
 
 | Subnet | CIDR | AZ | Purpose |
 |--------|------|----|---------|
-| Public A | 10.0.0.0/20 | us-east-1a | ALB, NAT Gateway |
-| Public B | 10.0.16.0/20 | us-east-1b | ALB (HA) |
-| Private A | 10.0.160.0/20 | us-east-1a | EKS nodes, RDS primary |
-| Private B | 10.0.176.0/20 | us-east-1b | EKS nodes, RDS standby |
+| Public A | 10.0.0.0/24 | us-east-1a | ALB, NAT Gateway |
+| Public B | 10.0.1.0/24 | us-east-1b | ALB (HA) |
+| Private A | 10.0.10.0/24 | us-east-1a | EKS nodes, RDS primary |
+| Private B | 10.0.11.0/24 | us-east-1b | EKS nodes, RDS standby |
 
 ### Traffic Flow
 

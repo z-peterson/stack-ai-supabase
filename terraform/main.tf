@@ -27,6 +27,7 @@ module "secrets" {
 
   project_name = var.project_name
   db_username  = var.db_username
+  db_name      = var.db_name
 }
 
 module "rds" {
@@ -60,5 +61,6 @@ module "iam" {
   oidc_provider_url  = module.eks.oidc_provider_url
   cluster_name       = var.cluster_name
   storage_bucket_arn = module.s3.bucket_arn
+  secrets_arn        = module.secrets.secret_arn
   environment        = var.environment
 }
