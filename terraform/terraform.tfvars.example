@@ -1,0 +1,29 @@
+# AWS Configuration
+aws_region  = "us-east-1"
+environment = "production"
+
+# Project
+project_name = "stack-ai-supabase"
+
+# VPC
+vpc_cidr = "10.0.0.0/16"
+
+# EKS
+cluster_name        = "supabase-cluster"
+cluster_version     = "1.29"
+node_instance_types = ["t3.large"]
+node_min_size       = 2
+node_max_size       = 6
+node_desired_size   = 2
+
+# RDS
+rds_identifier          = "supabase-db"
+rds_instance_class      = "db.t3.medium"
+rds_allocated_storage   = 50
+db_name                 = "supabase"
+db_username             = "supabase_admin"
+rds_skip_final_snapshot = false
+rds_deletion_protection = true
+
+# S3
+storage_bucket_name = "stack-ai-supabase-storage"
