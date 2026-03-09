@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  terraform:
+    name: Terraform Validate & Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7"
+
+      - name: Terraform Init
+        run: cd terraform && terraform init -backend=false
+
+      - name: Terraform Validate
+        run: cd terraform && terraform validate
+
+      - name: TFLint
+        uses: terraform-linters/setup-tflint@v4
+      - run: cd terraform && tflint --init && tflint --recursive
+
+  kubernetes:
+    name: Kubernetes Manifest Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Add Supabase Helm repo
+        run: |
+          helm repo add supabase-community https://supabase-community.github.io/supabase-kubernetes
+          helm repo update
+
+      - name: Helm Lint
+        run: helm lint -f kubernetes/values/supabase-production.yaml supabase-community/supabase
+
+      - name: Helm Template
+        run: |
+          helm template supabase supabase-community/supabase \
+            -f kubernetes/values/supabase-production.yaml \
+            --namespace supabase > /dev/null
+
+      - name: Install kubeconform
+        run: |
+          curl -sL https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz | tar xz
+          sudo mv kubeconform /usr/local/bin/
+
+      - name: Validate manifests
+        run: find kubernetes/manifests -name '*.yaml' | xargs kubeconform -strict -ignore-missing-schemas
+
+  scripts:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck
+        run: shellcheck scripts/*.sh
